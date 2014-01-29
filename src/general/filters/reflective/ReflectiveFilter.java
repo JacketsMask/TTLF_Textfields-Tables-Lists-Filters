@@ -1,4 +1,4 @@
-package reflectivefilter;
+package general.filters.reflective;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

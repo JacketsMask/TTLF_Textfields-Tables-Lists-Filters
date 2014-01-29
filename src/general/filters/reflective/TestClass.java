@@ -1,4 +1,4 @@
-package reflectivefilter;
+package general.filters.reflective;
 
 /**
  * A test class for use in demonstrating the reflective filter.
