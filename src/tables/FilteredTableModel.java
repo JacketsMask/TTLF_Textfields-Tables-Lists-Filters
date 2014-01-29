@@ -8,6 +8,8 @@ import javax.swing.table.AbstractTableModel;
  * A table model that updates items visible in the table to the content
  * dynamically typed into a related JTextField, irrespective of character case.
  *
+ * Note: Currently filters based off of a single column in the table.
+ * 
  * @author Jacob Dorman
  */
 public final class FilteredTableModel extends AbstractTableModel {
@@ -40,17 +42,19 @@ public final class FilteredTableModel extends AbstractTableModel {
     private JTextField filterTextField;
 
     /**
-     * Creates a new FilteredListModel, and assigns the passed JTextField as the
+     * Creates a new FilteredTableModel, and assigns the passed JTextField as the
      * filter for this list.  The column that will be searched is by default the first column.
      * @param filterTextField the filter of the list
      * @param numCols the number of columns
+     * @param searchColumnIndex the column to search when filtering
      * @param columnNames a string array of the names of the columns
      */
-    public FilteredTableModel(final JTextField filterTextField, int numCols, String[] columnNames) {
+    public FilteredTableModel(final JTextField filterTextField, int numCols, 
+            int searchColumnIndex, String[] columnNames) {
         this.numCols = numCols;
         this.numTotalRows = 0;
         this.numVisibleRows = 0;
-        this.columnToSearch = 0;
+        this.columnToSearch = searchColumnIndex;
         searchCompleted = false;
         this.masterData = new ArrayList<>();
         this.visibleData = new ArrayList<>();
@@ -161,10 +165,10 @@ public final class FilteredTableModel extends AbstractTableModel {
         //Make the search term lower case for easier searching
         searchQuery = searchQuery.toLowerCase();
         //Search target column
-        ArrayList<Object> firstColumn = masterData.get(columnToSearch);
-        //Search every row of the first column
+        ArrayList<Object> searchColumn = masterData.get(columnToSearch);
+        //Search every row of the search column
         for (int j = 0; j < numTotalRows; j++) {
-            Object row = firstColumn.get(j);
+            Object row = searchColumn.get(j);
             //Check to see is row contains the search query
             if (row.toString().toLowerCase().contains(searchQuery)) {
                 results.add(j);
