@@ -9,7 +9,7 @@ import javax.swing.JTextField;
  * A FilteredTextField that stores an ArrayList of data that can be filtered by
  * typing into the text field.
  *
- * In order to use this, a JList must be used to display the model.
+ * Note: In order to use this, a JList must be used to display the model.
  *
  * @author Jacob Dorman
  */
