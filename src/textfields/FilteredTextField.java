@@ -19,7 +19,7 @@ public class FilteredTextField<G> extends JTextField {
     private JList list;
     //The model storing the visible data
     private DefaultListModel model;
-    //The arraylist that holds the sum of the data
+    //The arraylist that holds the master data
     private ArrayList<G> data;
 
     public FilteredTextField() {
@@ -29,6 +29,13 @@ public class FilteredTextField<G> extends JTextField {
         registerListener();
     }
 
+    /**
+     * Create a new FilteredTextField, and connect the passed JList to this. A
+     * new DefaultListModel will be created for the list, so existing list
+     * contents will be lost.
+     *
+     * @param connectedList the JList to connect
+     */
     public FilteredTextField(JList connectedList) {
         super();
         model = new DefaultListModel();
@@ -36,11 +43,19 @@ public class FilteredTextField<G> extends JTextField {
         registerListener();
     }
 
+    /**
+     * Sets the contents of the list to the passed ArrayList objects.
+     *
+     * @param data an ArrayList of objects
+     */
     public void setData(ArrayList<G> data) {
         this.data = data;
         fillModelFromArrayList(this.data);
     }
 
+    /**
+     * @return the ArrayList containing the contents of the master list
+     */
     public ArrayList<G> getData() {
         return data;
     }
@@ -57,6 +72,11 @@ public class FilteredTextField<G> extends JTextField {
         });
     }
 
+    /**
+     * Updates visible elements based off the current text in this text field.
+     *
+     * @param evt
+     */
     private void updateVisibleElements(java.awt.event.KeyEvent evt) {
         //Get list, filter list, update visible list
         String searchQuery = this.getText();
@@ -77,11 +97,21 @@ public class FilteredTextField<G> extends JTextField {
         list.clearSelection();
     }
 
+    /**
+     * @return a reference to the connected JList
+     */
     public JList getConnectedList() {
         return list;
     }
 
+    /**
+     * Connects this filter text field to the passed list and sets the list to
+     * use this data.
+     *
+     * @param connectedList the new list to connect to
+     */
     public void setConnectedList(JList connectedList) {
+
         this.list = connectedList;
         this.list.setModel(model);
     }
@@ -95,6 +125,14 @@ public class FilteredTextField<G> extends JTextField {
         fillModelFromArrayList(results);
     }
 
+    /**
+     * Search the current master list and return an ArrayList of results for
+     * all matches. If the search term is contained within the toString of the
+     * object, the object will be added to the results.
+     *
+     * @param searchTerm the term to search by
+     * @return a new ArrayList of matches
+     */
     public ArrayList<G> searchData(String searchTerm) {
         ArrayList<G> results = new ArrayList<>();
         //Make the search term lower case for easier searching
