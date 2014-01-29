@@ -17,8 +17,8 @@ public class JListHelper {
      * Links two JLists so that if an element is clicked on one it is moved to
      * the other list.
      *
-     * @param firstList
-     * @param secondList
+     * @param firstList the first JList
+     * @param secondList the second JList
      */
     public static void registerLinkedJListListener(final JList firstList, final JList secondList) {
         firstList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
