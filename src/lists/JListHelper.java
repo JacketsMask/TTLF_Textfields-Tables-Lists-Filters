@@ -7,7 +7,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Contains static methods with cool functionality for JLists.
+ * Contains static methods with cool functionality for JLists. Requires that the
+ * JLists use DefaultListModels.
  *
  * @author Jacob Dorman
  */
@@ -30,8 +31,10 @@ public class JListHelper {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     Object selectedValue = firstList.getSelectedValue();
-                    firstDataModel.removeElement(selectedValue);
-                    secondDataModel.addElement(selectedValue);
+                    if (selectedValue != null) {
+                        firstDataModel.removeElement(selectedValue);
+                        secondDataModel.addElement(selectedValue);
+                    }
                 }
             }
         });
@@ -40,8 +43,10 @@ public class JListHelper {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     Object selectedValue = secondList.getSelectedValue();
-                    secondDataModel.removeElement(selectedValue);
-                    firstDataModel.addElement(selectedValue);
+                    if (selectedValue != null) {
+                        secondDataModel.removeElement(selectedValue);
+                        firstDataModel.addElement(selectedValue);
+                    }
                 }
             }
         });
