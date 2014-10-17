@@ -3,23 +3,22 @@ package tables;
 import java.util.ArrayList;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 /**
  * A table model that updates items visible in the table to the content
  * dynamically typed into a related JTextField, irrespective of character case.
  *
  * Note: Currently filters based off of a single column in the table.
- * 
+ *
  * @author Jacob Dorman
  */
 public final class FilteredTableModel extends AbstractTableModel {
 
     /**
-     * Each column is an ArrayList that holds data for that column.
-     * G value = masterData.get(0).get(1);
-     *     ^                    ^      ^
-     *   value                column  row
-     * 
+     * Each column is an ArrayList that holds data for that column. G value =
+     * masterData.get(0).get(1); ^ ^ ^ value column row
+     *
      */
     private ArrayList<ArrayList<Object>> masterData;
     /**
@@ -42,14 +41,16 @@ public final class FilteredTableModel extends AbstractTableModel {
     private JTextField filterTextField;
 
     /**
-     * Creates a new FilteredTableModel, and assigns the passed JTextField as the
-     * filter for this list.  The column that will be searched is by default the first column.
+     * Creates a new FilteredTableModel, and assigns the passed JTextField as
+     * the filter for this list. The column that will be searched is by default
+     * the first column.
+     *
      * @param filterTextField the filter of the list
      * @param numCols the number of columns
      * @param searchColumnIndex the column to search when filtering
      * @param columnNames a string array of the names of the columns
      */
-    public FilteredTableModel(final JTextField filterTextField, int numCols, 
+    public FilteredTableModel(final JTextField filterTextField, int numCols,
             int searchColumnIndex, String[] columnNames) {
         this.numCols = numCols;
         this.numTotalRows = 0;
@@ -76,9 +77,43 @@ public final class FilteredTableModel extends AbstractTableModel {
     }
 
     /**
-     * Returns 
+     * Create this model with info from another model.
+     *
+     * @param filterField the text field that will filter the table
+     * @param model the model whose data to initialize this model with
+     * @param searchColumnIndex the index of the table to search within
+     */
+    public FilteredTableModel(final JTextField filterField, TableModel model, int searchColumnIndex) {
+        this(filterField,model.getColumnCount(), searchColumnIndex, extractColumnNamesFromModel(model));
+        //Iterate through rows existing in the old model
+        for (int i = 0; i < model.getRowCount(); i++) {
+            //Add existing columns
+            Object[] rowData = new Object[numCols];
+            for (int j = 0; j < numCols; j++) {
+                rowData[j] = model.getValueAt(i, j);
+            }
+            addRow(rowData);
+        }
+    }
+    
+    /**
+     * @param model
+     * @return a String[] of column names from the passed model
+     */
+    private static String[] extractColumnNamesFromModel(TableModel model) {
+        //Set column names
+        String[] columnNames = new String[model.getColumnCount()];
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            columnNames[i] = model.getColumnName(i);
+        }
+        return columnNames;
+    }
+
+    /**
+     * Returns
+     *
      * @param index
-     * @return 
+     * @return
      */
     public ArrayList<Object> getRow(int index) {
         ArrayList<Object> rowData = new ArrayList<>();
@@ -96,7 +131,8 @@ public final class FilteredTableModel extends AbstractTableModel {
 
     /**
      * Set the column that will be searched by the text field filter.
-     * @param columnIndex 
+     *
+     * @param columnIndex
      */
     public void setColumnToSearch(int columnIndex) {
         if (columnIndex > 0 && columnIndex < numCols) {
@@ -113,7 +149,8 @@ public final class FilteredTableModel extends AbstractTableModel {
 
     /**
      * Adds the passed data as a new row in the table.
-     * @param rowData 
+     *
+     * @param rowData
      */
     public void addRow(Object[] rowData) {
         //Make sure there's enough data for each column
@@ -131,7 +168,8 @@ public final class FilteredTableModel extends AbstractTableModel {
 
     /**
      * Removes the row at the passed index.
-     * @param rowIndex 
+     *
+     * @param rowIndex
      */
     public void removeRow(int rowIndex) {
         //Make sure the row is in bounds
@@ -243,9 +281,10 @@ public final class FilteredTableModel extends AbstractTableModel {
 
     /**
      * Sets the value in the passed row and column to the passed value.
+     *
      * @param value
      * @param rowIndex
-     * @param columnIndex 
+     * @param columnIndex
      */
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
@@ -262,7 +301,7 @@ public final class FilteredTableModel extends AbstractTableModel {
      */
     public void clearRows() {
         int rowCount = getRowCount();
-        for (int i = 0 ; i < rowCount; i++) {
+        for (int i = 0; i < rowCount; i++) {
             removeRow(0);
         }
     }
