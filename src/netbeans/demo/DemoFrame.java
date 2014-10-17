@@ -89,6 +89,7 @@ public class DemoFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
 
         jLabel1.setText("Filter:");
 
@@ -278,7 +279,7 @@ public class DemoFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         
         try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(DemoFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
